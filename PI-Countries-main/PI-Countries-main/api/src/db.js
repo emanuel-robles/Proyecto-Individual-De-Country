@@ -20,7 +20,6 @@ fs.readdirSync(path.join(__dirname, '/models'))
   .forEach((file) => {
     modelDefiners.push(require(path.join(__dirname, '/models', file)));
   });
-
 // Injectamos la conexion (sequelize) a todos los modelos
 modelDefiners.forEach(model => model(sequelize));
 // Capitalizamos los nombres de los modelos ie: product => Product
@@ -30,7 +29,10 @@ sequelize.models = Object.fromEntries(capsEntries);
 
 // En sequelize.models están todos los modelos importados como propiedades
 // Para relacionarlos hacemos un destructuring
-const { Pokemon } = sequelize.models;
+const { Country, 
+TouristActivity } = sequelize.models;
+Country.belongsToMany(TouristActivity,{ through: "Country_TouristActivity"});
+TouristActivity.belongsToMany( Country,{ through: "Country_TouristActivity"});
 
 // Aca vendrian las relaciones
 // Product.hasMany(Reviews);
